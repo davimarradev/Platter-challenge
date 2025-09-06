@@ -25,15 +25,6 @@
 {%- endif -%}
 
 {%- style -%}
-  .mobile-show-more-btn {
-    padding: 16px 24px!important;
-    border-radius: 100px!important;
-    width: 327px;
-    background-color: #1c1d1d;
-    color: white;
-    font-weight: 600;
-
-  }
 
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -114,12 +105,6 @@
       display: none !important;
     }
     
-    .collection__title-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 2rem;
-    }
     
     .collection__title-link {
       text-decoration: none;
@@ -318,14 +303,14 @@ function showMoreProducts(button) {
     data-id="{{ section.id }}"
   >
     <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
-      <div class="collection__title-container">
+      <div class="flex justify-between items-baseline gap-8">
         {%- if section.settings.title != blank -%}
           <h2 class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
             {{ section.settings.title }}
           </h2>
         {%- endif -%}
         {%- if section.settings.title_link_text != blank and section.settings.title_link_url != blank -%}
-          <a href="{{ section.settings.title_link_url }}" class="collection__title-link">
+          <a href="{{ section.settings.title_link_url }}" class="flex collection__title-link">
             <span>{{ section.settings.title_link_text }} </span>{{- 'icon-arrow.svg' | inline_asset_content -}}
           </a>
         {%- endif -%}
@@ -431,9 +416,10 @@ function showMoreProducts(button) {
       {%- endif -%}
     </slider-component>
     {%- if products_to_display > mobile_show_limit -%}
-      <div class="mobile-show-more center" style="margin-top: 2rem;">
+      <div class="mobile-show-more center flex justify-center mt-8">
         <button 
-          class=" mobile-show-more-btn"
+          class="px-6 py-4 rounded-full w-80 font-semibold"
+          style="background-color: {{ section.settings.mobile_button_bg_color }}; color: {{ section.settings.mobile_button_text_color }};"
           data-section-id="{{ section.id }}"
           onclick="showMoreProducts(this)"
         >
@@ -443,7 +429,7 @@ function showMoreProducts(button) {
     {%- endif -%}
 
     {%- if section.settings.show_view_all and more_in_collection -%}
-      <div class="center collection__view-all{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <div class="center collection__view-all flex justify-center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         <a
           href="{{ section.settings.collection.url }}"
           class="{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}"
@@ -750,6 +736,18 @@ function showMoreProducts(button) {
       "id": "swipe_on_mobile",
       "default": false,
       "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "color",
+      "id": "mobile_button_bg_color",
+      "label": "Mobile show more button background color",
+      "default": "#1c1d1d"
+    },
+    {
+      "type": "color",
+      "id": "mobile_button_text_color",
+      "label": "Mobile show more button text color",
+      "default": "#ffffff"
     },          
     {
       "type": "header",
